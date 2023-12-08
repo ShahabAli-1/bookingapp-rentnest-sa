@@ -39,7 +39,7 @@ app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
 // origin defines what app we want to allow to communicate
-console.log(__dirname);
+
 app.use(
   cors({
     credentials: true,
