@@ -1,6 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import Image from "./Image";
+import storage from "../firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+
 const PhotosUploader = ({ addedPhotos, onChange }) => {
   const [photoLink, setPhotoLink] = useState("");
   const [uploading, setUploading] = useState(false);
