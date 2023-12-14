@@ -3,6 +3,7 @@ import axios from "axios";
 import Image from "./Image";
 const PhotosUploader = ({ addedPhotos, onChange }) => {
   const [photoLink, setPhotoLink] = useState("");
+  const [uploading, setUploading] = useState(false);
   const addPhotoByLink = async (e) => {
     e.preventDefault();
     const { data: filename } = await axios.post("/upload-by-link", {
@@ -73,7 +74,13 @@ const PhotosUploader = ({ addedPhotos, onChange }) => {
           Add&nbsp;photo
         </button>
       </div>
-
+      <div>
+        {uploading && (
+          <h2>
+            <strong>Uploading your Photos...</strong>
+          </h2>
+        )}
+      </div>
       <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
         {addedPhotos.length > 0 &&
           addedPhotos.map((link) => (
