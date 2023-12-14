@@ -12,11 +12,11 @@ const download = require("image-downloader");
 // for uploading files to local
 // const multer = require("multer");
 // for uploading files to s3
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+// const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const fs = require("fs");
 const { rejects } = require("assert");
 const multer = require("multer");
-const mime = require("mime-types");
+// const mime = require("mime-types");
 
 // secret for password hashing
 const bcryptSalt = bcrypt.genSaltSync(10);
@@ -25,7 +25,7 @@ const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "kdbcjsdjcsdjcnsjkbjh";
 
 // aws bucket name
-const bucket = "rentnest-shahab";
+// const bucket = "rentnest-shahab";
 
 require("dotenv").config();
 const app = express();
@@ -55,28 +55,28 @@ app.use(
 // //   console.error("Error connecting to MongoDB:", err.message);
 // // });
 
-async function uploadToS3(path, originalFilename, mimetype) {
-  const client = new S3Client({
-    region: "eu-north-1",
-    credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY,
-      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-    },
-  });
-  const parts = originalFilename.split(".");
-  const ext = parts[parts.length - 1];
-  const newFilename = Date.now() + "." + ext;
-  await client.send(
-    new PutObjectCommand({
-      Bucket: bucket,
-      Body: fs.readFileSync(path),
-      Key: newFilename,
-      ContentType: mimetype,
-      ACL: "public-read",
-    })
-  );
-  return `https://${bucket}.s3.amazonaws.com/${newFilename}`;
-}
+// async function uploadToS3(path, originalFilename, mimetype) {
+//   const client = new S3Client({
+//     region: "eu-north-1",
+//     credentials: {
+//       accessKeyId: process.env.S3_ACCESS_KEY,
+//       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+//     },
+//   });
+//   const parts = originalFilename.split(".");
+//   const ext = parts[parts.length - 1];
+//   const newFilename = Date.now() + "." + ext;
+//   await client.send(
+//     new PutObjectCommand({
+//       Bucket: bucket,
+//       Body: fs.readFileSync(path),
+//       Key: newFilename,
+//       ContentType: mimetype,
+//       ACL: "public-read",
+//     })
+//   );
+//   return `https://${bucket}.s3.amazonaws.com/${newFilename}`;
+// }
 
 function getUserDataFromReq(req) {
   return new Promise((resolve, reject) => {
@@ -150,40 +150,40 @@ app.post("/api/logout", (req, res) => {
   res.cookie("token", "").json(true);
 });
 
-app.post("/api/upload-by-link", async (req, res) => {
-  const { link } = req.body;
-  const newName = "photo" + Date.now() + ".jpg";
-  await download.image({
-    url: link,
-    dest: "/tmp/" + newName,
-  });
-  const url = await uploadToS3(
-    "/tmp/" + newName,
-    newName,
-    mime.lookup("/tmp/" + newName)
-  );
-  console.log(url);
-  res.json(url);
-});
+// app.post("/api/upload-by-link", async (req, res) => {
+//   const { link } = req.body;
+//   const newName = "photo" + Date.now() + ".jpg";
+//   await download.image({
+//     url: link,
+//     dest: "/tmp/" + newName,
+//   });
+//   const url = await uploadToS3(
+//     "/tmp/" + newName,
+//     newName,
+//     mime.lookup("/tmp/" + newName)
+//   );
+//   console.log(url);
+//   res.json(url);
+// });
 
-const photosMiddleware = multer({ dest: "/tmp" });
+// const photosMiddleware = multer({ dest: "/tmp" });
 
-app.post(
-  "/api/upload",
-  photosMiddleware.array("photos", 100),
-  async (req, res) => {
-    mongoose.connect(process.env.MONGO_URL);
-    const uploadedFiles = [];
+// app.post(
+//   "/api/upload",
+//   photosMiddleware.array("photos", 100),
+//   async (req, res) => {
+//     mongoose.connect(process.env.MONGO_URL);
+//     const uploadedFiles = [];
 
-    for (let i = 0; i < req.files.length; i++) {
-      const { path, originalname, mimetype } = req.files[i];
-      const url = await uploadToS3(path, originalname, mimetype);
-      uploadedFiles.push(url);
-    }
-    console.log("Upload files", uploadedFiles);
-    res.json(uploadedFiles);
-  }
-);
+//     for (let i = 0; i < req.files.length; i++) {
+//       const { path, originalname, mimetype } = req.files[i];
+//       const url = await uploadToS3(path, originalname, mimetype);
+//       uploadedFiles.push(url);
+//     }
+//     console.log("Upload files", uploadedFiles);
+//     res.json(uploadedFiles);
+//   }
+// );
 
 app.post("/api/places", (req, res) => {
   mongoose.connect(process.env.MONGO_URL);

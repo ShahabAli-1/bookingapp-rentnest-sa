@@ -14,25 +14,38 @@ const PhotosUploader = ({ addedPhotos, onChange }) => {
     setPhotoLink("");
   };
 
-  const uploadPhoto = (e) => {
+  const uploadPhoto = async (e) => {
+    setUploading(true);
     const files = e.target.files;
-    console.log({ files });
-    const data = new FormData();
+    console.log(files.length);
+    console.log(files);
+    console.log(files[0].name);
+
+    const uploadPromises = [];
+
     for (let i = 0; i < files.length; i++) {
-      data.append("photos", files[i]);
+      const storageRef = ref(storage, `posts/${files[i].name}`);
+      const uploadTask = uploadBytes(storageRef, files[i]);
+
+      uploadPromises.push(
+        uploadTask.then(() => {
+          return getDownloadURL(storageRef);
+        })
+      );
     }
 
-    axios
-      .post("/upload", data, {
-        "Content-type": "multipart/form-data",
-      })
-      .then((res) => {
-        const { data: filenames } = res;
-        console.log("Filesss", filenames);
-        onChange((prev) => {
-          return [...prev, ...filenames];
-        });
+    try {
+      const firebaseImgUrls = await Promise.all(uploadPromises);
+      console.log(firebaseImgUrls);
+
+      await onChange((prev) => {
+        return [...prev, ...firebaseImgUrls];
       });
+      setUploading(false);
+    } catch (error) {
+      console.error("Error uploading photos:", error);
+      setUploading(false);
+    }
   };
   const removePhoto = (ev, link) => {
     ev.preventDefault();
