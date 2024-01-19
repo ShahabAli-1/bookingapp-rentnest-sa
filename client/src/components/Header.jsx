@@ -26,11 +26,11 @@ const Header = () => {
           <span className="font-bold text-xl">rentnest</span>
         </Link>
         <div className="hidden md:flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300">
-          <div>Anywhere</div>
+          <div className="flex items-center">Anywhere</div>
           <div className="border-l border-gray-300"></div>
-          <div>Any week</div>
+          <div className="flex items-center">Any week</div>
           <div className="border-l border-gray-300"></div>
-          <div>Any Time</div>
+          <div className="flex items-center">Any Time</div>
           <button className="bg-primary text-white p-1 rounded-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
