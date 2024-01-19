@@ -85,8 +85,8 @@ const Header = () => {
             <div>{user.name}</div>
           </Link>
         ) : (
-          <Link to="/login" className="primary">
-            Login
+          <Link to="/login">
+            <button className="primary">Login</button>
           </Link>
         )}
       </header>
