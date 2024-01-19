@@ -82,7 +82,7 @@ const Header = () => {
                 />
               </svg>
             </div>
-            {!!user && <div>{user.name}</div>}
+            <div>{user.name}</div>
           </Link>
         ) : (
           <Link to="/login" className="border border-l-red-400">
