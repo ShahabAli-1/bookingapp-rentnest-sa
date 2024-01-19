@@ -85,7 +85,7 @@ const Header = () => {
             <div>{user.name}</div>
           </Link>
         ) : (
-          <Link to="/login" className="border border-l-red-400">
+          <Link to="/login" className="primary">
             Login
           </Link>
         )}
