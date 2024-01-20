@@ -49,13 +49,24 @@ const Header = () => {
           </button>
         </div>
         {user ? (
-          <Link
+          <div
             // to={user ? "/account" : "/login"}
-            to={"/account"}
+
             className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 "
           >
-            <button className="p-2 border-pink-100 rounded-lg">Profile</button>
-
+            <Link to={"/"}>
+              <button className="bg-primary text-white px-4 py-2 rounded-full">
+                Home
+              </button>
+            </Link>
+            <Link to={"/account"}>
+              {/* <button className="p-2 border-pink-100 rounded-lg">
+                Profile
+              </button> */}
+              <button className="bg-primary text-white px-4 py-2 rounded-full">
+                Profile
+              </button>
+            </Link>
             <div className="bg-gray-500 text-white rounded-full border border-gray-500 overflow-hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +82,7 @@ const Header = () => {
               </svg>
             </div>
             <div className="font-bold">{user.name}</div>
-          </Link>
+          </div>
         ) : (
           <Link to="/login">
             <button className="primary">Login</button>
